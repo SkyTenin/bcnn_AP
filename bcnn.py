@@ -336,7 +336,6 @@ if __name__ ==  '__main__':
 
         feat_list = np.array(test_out)
         label_list = np.array(test_l)
-        feat_list[0] = 70
         plt.scatter(label_list,feat_list,c = 'r',marker = '.')  
 
         r = pearsonr(feat_list, label_list)
