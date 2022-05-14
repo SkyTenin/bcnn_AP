@@ -157,32 +157,33 @@ def r2_s(y_test, y_pred):
     r2 = 1 - mse_test / var
     return r2
 
-# def plot_regression(y_, result, avg_r, avg_mae):
-#     axismin, axismax = 60, 90
-#     y_ = np.array(y_)
-#     result = np.array(result)
-#     [k, b] = np.polyfit(y_, result.reshape(-1, 1), 1)               #计算斜率和截距
-#     # print(k, b)
-#     x_axis = np.linspace(axismin + 0.05 * axismax, axismax * 0.95, 69696)
-#     # y_pred = model_regress.predict(x_axis)
-#     y_axis = k * x_axis + b
-#     y_regress = np.polyval([k, b], x_axis)
 
-#     plt.figure()
-#     plt.scatter(y_, result, c='green', marker='o')
+def plot_regression(y_, result, avg_r, avg_mae):
+    axismin, axismax = 60, 90
+    y_ = np.array(y_)
+    result = np.array(result)
+    [k, b] = np.polyfit(y_, result.reshape(-1, 1), 1)               #计算斜率和截距
+    # print(k, b)
+    x_axis = np.linspace(axismin + 0.01 * axismax, axismax * 0.99, 69696)
+    # y_pred = model_regress.predict(x_axis)
+    y_axis = k * x_axis + b
+    y_regress = np.polyval([k, b], x_axis)
 
-#     plt.plot(x_axis, y_regress, 'r-', label='output fit line', lw=3.0)
-#     # # ax = seaborn.regplot(x=result, y=y_, ci=90)
-#     plt.xlim(axismin, axismax)
-#     plt.ylim(axismin, axismax)
-#     plt.text(1, 43, 'R={:.2f}'.format(avg_r), fontweight='bold')
-#     plt.text(1, 41, 'MAE={:.2f}'.format(avg_mae), fontweight='bold')
-#     plt.title("BrainNetCNN Age Regression with Dcor")
-#     plt.ylabel('Predicted age')
-#     plt.xlabel('Ground-Truth age')
-#     plt.legend(loc='upper left')
-#     savename = 'BCNN_age_dCor_NKI.jpg'
-#     plt.savefig(savename)
+    plt.figure()
+    plt.scatter(y_, result, c='none', marker='o',edgecolors='k', s=10)
+
+
+    plt.plot(x_axis, y_regress, 'r-', label='output fit line', lw=3.0)
+    # # ax = seaborn.regplot(x=result, y=y_, ci=90)
+    plt.xlim(axismin, axismax)
+    plt.ylim(axismin, axismax)
+    plt.text(84, 89, 'R={:.3f}'.format(avg_r), fontweight='bold')
+    plt.text(84, 88, 'MAE={:.3f}'.format(avg_mae), fontweight='bold')
+    plt.xlabel('Actual age')
+    plt.ylabel('Predicted age')
+    plt.title('Age Regression')
+    plt.legend(loc='upper left')
+    plt.savefig('/vc_data/users/t-zilongwang/bcnn_AP.png')
 
 
 
@@ -239,16 +240,16 @@ if __name__ ==  '__main__':
         valid_idx = temp_idx[int(train_val_n * 0.9):]
 
         """GAN"""
-        for generate_data_count in range(0, 900):
+        for generate_data_count in range(0, 1000):
             if (os.path.isfile("./generate_data/data/subject_"  + str(generate_data_count).zfill(3) + ".npy")) :
                 train_set.append("./generate_data/data/subject_"  + str(generate_data_count).zfill(3) + ".npy")
                 tmp_label = np.load("./generate_data/label/label_"  + str(generate_data_count).zfill(3) + ".npy")
                 train_label.append(tmp_label[0])
-        for generate_data_count in range(901, 1000):
-            if (os.path.isfile("./generate_data/data/subject_"  + str(generate_data_count).zfill(3) + ".npy")) :
-                valid_set.append("./generate_data/data/subject_"  + str(generate_data_count).zfill(3) + ".npy")
-                tmp_label = np.load("./generate_data/label/label_"  + str(generate_data_count).zfill(3) + ".npy")
-                valid_label.append(tmp_label[0])
+#         for generate_data_count in range(901, 1000):
+#             if (os.path.isfile("./generate_data/data/subject_"  + str(generate_data_count).zfill(3) + ".npy")) :
+#                 valid_set.append("./generate_data/data/subject_"  + str(generate_data_count).zfill(3) + ".npy")
+#                 tmp_label = np.load("./generate_data/label/label_"  + str(generate_data_count).zfill(3) + ".npy")
+#                 valid_label.append(tmp_label[0])
         """GAN"""
 
         test_set.append([all_df[idx] for idx in test_idx])
@@ -263,10 +264,10 @@ if __name__ ==  '__main__':
         train_set = np.array(train_set).squeeze()
         train_label = np.array(train_label).squeeze()
 
-        valid_set += [all_df[idx] for idx in valid_idx]
-        valid_label += [all_labels[idx] for idx in valid_idx]
-        # valid_set.append([all_df[idx] for idx in train_idx])
-        # valid_label.append([all_labels[idx] for idx in train_idx])
+#         valid_set += [all_df[idx] for idx in valid_idx]
+#         valid_label += [all_labels[idx] for idx in valid_idx]
+        valid_set.append([all_df[idx] for idx in valid_idx])
+        valid_label.append([all_labels[idx] for idx in valid_idx])
         val_set = np.array(valid_set).squeeze()
         val_label = np.array(valid_label).squeeze()
 
@@ -372,13 +373,13 @@ if __name__ ==  '__main__':
     print('avg_r2:{:.6f}'.format(sum_r2 / (KFolds-count)))
     print('avg_mae:{:.6f}'.format(sum_mae / (KFolds-count)))
 
-    plt.plot([60,90],[60,90],linestyle='-',color='k')
-    plt.xlim([60,90])
-    plt.ylim([60,90])
-    plt.xlabel('Actual Value')
-    plt.ylabel('Predicted Value')
-    plt.title('Scatter plot')
+#     plt.plot([60,90],[60,90],linestyle='-',color='k')
+#     plt.xlim([60,90])
+#     plt.ylim([60,90])
+#     plt.xlabel('Actual Value')
+#     plt.ylabel('Predicted Value')
+#     plt.title('Scatter plot')
     # plt.legend(loc='lower right')
     # plt.show()  
     # plt.savefig('./bcnn.png') # -----(2)
-    plt.savefig('/vc_data/users/t-zilongwang/bcnn_AP.png') # -----(2)
+#     plt.savefig('/vc_data/users/t-zilongwang/bcnn_AP.png') # -----(2)
