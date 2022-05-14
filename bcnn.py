@@ -368,7 +368,7 @@ if __name__ ==  '__main__':
     # res_sum = np.sum(r_sum,axis=0) / KFolds
     # with open('/DATA/mahao_data/CamCAN/code/plot_txt/BCNN_age_dCor_NKI.txt', 'a') as f:
     #     f.write(str(res_sum))
-    # plot_regression(label_arr, res_arr, sum_r/KFolds, sum_mae/KFolds)
+    plot_regression(label_arr, res_arr, sum_r/KFolds, sum_mae/KFolds)
     print('avg_r:{:.6f}'.format(sum_r / (KFolds-count)))
     print('avg_r2:{:.6f}'.format(sum_r2 / (KFolds-count)))
     print('avg_mae:{:.6f}'.format(sum_mae / (KFolds-count)))
