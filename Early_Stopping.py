@@ -92,7 +92,7 @@ class EarlyStopping:
         save = savepath + 'model_BCNN_dCor_age_NKI' + '.pt'
         if self.verbose:
             print(f'Validation loss decreased ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ...')
-#         torch.save(model.state_dict(), save)	# 这里会存储迄今最优模型的参数
+        torch.save(model.state_dict(), save)	# 这里会存储迄今最优模型的参数
         self.val_loss_min = val_loss
 
     def save_checkpoint_2(self, val_loss, model, savepath, name):
