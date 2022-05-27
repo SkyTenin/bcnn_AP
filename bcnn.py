@@ -183,7 +183,7 @@ def plot_regression(y_, result, avg_r, avg_mae):
     plt.ylabel('Predicted age')
     plt.title('Age Regression')
     plt.legend(loc='upper left')
-    plt.savefig('/vc_data/users/t-zilongwang/bcnn_AP.png')
+    plt.savefig('/bcnn_AP.png')
 
 
 
